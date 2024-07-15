@@ -11,14 +11,16 @@ if (isset($_FILES["filecontent"]) && isset($_REQUEST["description"])) {
     $file_size = $_FILES["filecontent"]["size"];
     $description = $_REQUEST["description"];
 
-    if (!in_array($file_type, $allowed_types)) {
-        $ERROR_MSG = "Le type de format n'est pas valide. Seul les formats suivants sont supportés: JPEG, PNG, et PDF";
+    if (!ctype_alnum($description)) {
+        $ERROR_MSG = "La description ne doit contenir que des caractères alphanumériques.";
+    } elseif (!in_array($file_type, $allowed_types)) {
+        $ERROR_MSG = "Le type de format n'est pas valide. Seuls les formats suivants sont supportés: JPEG, PNG, et PDF.";
     } elseif ($file_size > $max_size) {
         $ERROR_MSG = "La taille du fichier dépasse la limite de 20MB.";
     } else {
         $unique_id = uniqid();
         $file_extension = pathinfo($_FILES["filecontent"]["name"], PATHINFO_EXTENSION);
-        $new_filename = $_FILES["filecontent"]["name"] . $unique_id . "." . $file_extension;
+        $new_filename = pathinfo($_FILES["filecontent"]["name"], PATHINFO_FILENAME) . $unique_id . "." . $file_extension;
         $target_dir = "/var/www/html/files/" . $__connected["USERNAME"] . "/";
         $target_file = $target_dir . $new_filename;
 

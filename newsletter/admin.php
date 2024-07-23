@@ -16,8 +16,8 @@
     <div id="particles-js"></div>
     <div id="h" style="margin-top: 0; height: 100%;">
         <?php
+        session_start();
 
-        // Comparaison de l'agent utilisateur de manière sécurisée
         if ($_SERVER['HTTP_USER_AGENT'] !== 'TropSmartUserAgentAdminHeHeHe') {
             echo "<h1>Vous n'êtes pas autorisé à être ici !</h1></div></body></html>";
             exit;

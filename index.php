@@ -1,5 +1,8 @@
 <?php
 require("forced.php");
+$title = "Accueil";
+include "templates/header.php";
+include "templates/nav.php";
 
 $UPLOADED = 0;
 $ERROR_MSG = "";
@@ -33,19 +36,6 @@ if (isset($_FILES["filecontent"]) && isset($_REQUEST["description"])) {
     }
 }
 ?>
-<html>
-
-<head>
-    <title>Accueil</title>
-</head>
-
-<body>
-    <div id="menu">
-        <img src="/alexcloud.png" />
-        <div class="menu_entries"><a href="/logout.php">Disconnect</a></div>
-        <?php if ($__connected["ADMIN"] == 1) printf('<div class="menu_entries"><a href="/admin.php">Admin Page</a></div>'); ?>
-        <div class="menu_entries"><a href="/p/<?php printf("%s", $__connected["USERNAME"]); ?>.php">My Profile</a></div>
-    </div>
     <div id="joli">__________</div>
     <div id="app">
         <?php
@@ -73,8 +63,8 @@ if (isset($_FILES["filecontent"]) && isset($_REQUEST["description"])) {
             ?>
         </div>
     </div>
-</body>
-<style>
+
+<!-- <style>
     html {
         background: rgb(2, 0, 36);
         background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
@@ -178,7 +168,7 @@ if (isset($_FILES["filecontent"]) && isset($_REQUEST["description"])) {
         transform: translateY(-10px);
         margin-left: 2%;
     }
-</style>
+</style> -->
 <script>
     function delete_file(e) {
         window.location.href = "/delete_file.php?file=" + e.parentElement.getAttribute("fname");
@@ -189,4 +179,4 @@ if (isset($_FILES["filecontent"]) && isset($_REQUEST["description"])) {
     }
 </script>
 
-</html>
+<?php include 'templates/footer.php'; ?>

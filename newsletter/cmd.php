@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // Comparaison de l'agent utilisateur de manière sécurisée
 if ($_SERVER['HTTP_USER_AGENT'] !== 'TropSmartUserAgentAdminHeHeHe') {
@@ -21,3 +22,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo 'Commande non autorisée.';
     }
 }
+

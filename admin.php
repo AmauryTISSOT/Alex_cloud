@@ -1,18 +1,36 @@
 <?php
 	require("forced.php");
+    $title = "Page d'administration";
+    include "templates/header.php";
+    include "templates/nav.php";
 ?>
-<html>
-	<head>
-		<title>Login Page</title>
-	</head>
-	<body>
-		<h1>Cette page n'est pas écrite pour le moment...</h1>
-	</body>
-	<style>
-		html { background: rgb(2,0,36); background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%); }
-		html, body, div { margin: 0; padding: 0; }
-		* { position: relative; transition: all 1s; text-decoration: none; list-style: none; }
-		
-		h1 { color: white; }
-	</style>
-</html>
+<div class="container">
+    <h1>Liste des Emails</h1>
+    <?php
+    require_once 'singleton/Database.php';
+    $db = Database::getInstance();
+    $pdo = $db->getConnection();
+    try {
+        // Requête SQL pour sélectionner tous les emails
+        $sql = "SELECT email FROM newsletter";
+        $stmt = $pdo->query($sql);
+
+        // Vérification  et affichage des résultats
+        if ($stmt->rowCount() > 0) {
+            echo "<table>";
+            echo "<tr><th>Email</th></tr>";
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                echo "<tr><td>" . htmlspecialchars($row['email']) . "</td></tr>";
+            }
+            echo "</table>";
+        } else {
+            echo "<p>Aucun résultat trouvé.</p>";
+        }
+
+    } catch (PDOException $e) {
+        // Gestion des erreurs de connexion
+        echo "Erreur de connexion : " . $e->getMessage();
+    }
+    ?>
+</div>
+<?php include 'templates/footer.php'; ?>

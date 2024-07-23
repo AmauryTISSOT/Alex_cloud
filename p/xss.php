@@ -1,7 +1,7 @@
 <?php
 require("../forced.php");
 
-if (!($user_data = search_user("####USERNAME####"))) {
+if (!($user_data = search_user("xss"))) {
     printf("<h1>ERROR</h1>");
     die();
 }

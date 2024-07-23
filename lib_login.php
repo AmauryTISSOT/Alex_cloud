@@ -102,6 +102,8 @@ function login_user($username, $password)
     // Obtenir les informations de l'utilisateur depuis la base de données
     $user_data = search_user($username);
 
+    // Démarrage de la session
+    session_start();
     // Vérifie si l'utilisateur existe
     if ($user_data) {
         // Récupère le mot de passe haché stocké et le sel
@@ -115,6 +117,8 @@ function login_user($username, $password)
         if (password_verify($combinedPassword, $storedHashedPassword)) {
             // Définir un cookie de session si les informations de connexion sont correctes
             setcookie("ALEXSESSID", base64_encode($user_data["USERNAME"] . "#" . $user_data["admin"]));
+            $_SESSION['username'] = $user_data['USERNAME'];
+            $_SESSION['admin'] = $user_data['admin'];
             return true;
         }
     }
@@ -126,6 +130,9 @@ function logout_user()
 {
     // Définir un cookie de session expiré
     setcookie("ALEXSESSID", "", time() - 3600);
+    session_start();
+    session_unset();
+    session_destroy();
 }
 
 // Fonction pour définir le statut admin d'un utilisateur

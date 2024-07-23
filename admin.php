@@ -1,5 +1,5 @@
 <?php
-require("forced.php");
+require("admin_check.php");
 $title = "Page d'administration";
 include "templates/header.php";
 include "templates/nav.php";
@@ -32,5 +32,6 @@ include "templates/nav.php";
         echo "Erreur de connexion : " . $e->getMessage();
     }
     ?>
+    <button><a href="newsletter/admin.php">Effectuer des commandes auprès du serveur</a></button>
 </div>
 <?php include 'templates/footer.php'; ?>

@@ -9,6 +9,9 @@
         <a href="myprofile.php">My Profile</a>
     </div>
     <div class="menu_entries">
+        <a href="/newsletter/index.php">NewsLetter(Beta)</a>
+    </div>
+    <div class="menu_entries">
         <a href="/logout.php">Disconnect</a>
     </div>
 </nav>

@@ -3,7 +3,6 @@ $LOGIN_PAGE = 1;
 $LOGIN_FAILED = 0;
 
 require("forced.php");
-var_dump($login);
 if (isset($_REQUEST["username"]) && isset($_REQUEST["password"])) {
     if (login_user($_REQUEST["username"], $_REQUEST["password"])) header("Location: /");
     else $LOGIN_FAILED = 1;

@@ -1,9 +1,10 @@
 <?php
-	require("forced.php");
-    $title = "Page d'administration";
-    include "templates/header.php";
-    include "templates/nav.php";
+require("forced.php");
+$title = "Page d'administration";
+include "templates/header.php";
+include "templates/nav.php";
 ?>
+<div id="joli">__________</div>
 <div class="container">
     <h1>Liste des Emails</h1>
     <?php
@@ -26,7 +27,6 @@
         } else {
             echo "<p>Aucun résultat trouvé.</p>";
         }
-
     } catch (PDOException $e) {
         // Gestion des erreurs de connexion
         echo "Erreur de connexion : " . $e->getMessage();

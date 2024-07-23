@@ -47,11 +47,19 @@ h1 {
     color: white;
 }
 
+h3 {
+    text-align: center;
+    color: white;
+}
+
 #menu {
     height: 16%;
     width: 80%;
     background: rgba(255, 255, 255, 0.6);
     margin-left: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #menu img {
@@ -69,10 +77,27 @@ h1 {
 
 #menu div a {
     top: 45%;
+    text-decoration: none;
+}
+
+.menu_entries {
+    color: white;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu_entries:hover {
+    background-color: #555;
+    color: #ddd;
 }
 
 #joli {
-    width: 80%;
+    width: 100%;
     background: #449;
     left: 10%;
 }
@@ -130,4 +155,41 @@ input[type="text"] {
     padding: 10px 2%;
     transform: translateY(-10px);
     margin-left: 2%;
+}
+
+#profile {
+    width: 75%;
+    background: rgba(200, 200, 200, 0.4);
+    padding: 2.5%;
+    margin-left: 10%;
+}
+
+#desc {
+    border: 1px solid white;
+    box-shadow: 0px 0px 2px white;
+    padding: 2%;
+    width: 70%;
+    font-size: 120%;
+    background: rgba(255, 255, 255, 0.4);
+    color: #444;
+}
+
+#joli {
+    width: 100%;
+    background: #449;
+}
+
+.textarea {
+    width: 70%;
+    padding: 2%;
+    font-size: 120%;
+    background: rgba(255, 255, 255, 0.4);
+    color: #444;
+    border: 1px solid white;
+    box-shadow: 0px 0px 2px white;
+}
+
+button {
+    padding: 1% 2%;
+    margin-top: 2%;
 }

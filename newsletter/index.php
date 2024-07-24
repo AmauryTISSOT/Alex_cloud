@@ -1,4 +1,5 @@
 <?php
+require("forced.php");
 // Fonction qui vient établie une connexion avec la base de données "users"
 function getConnection()
 {
